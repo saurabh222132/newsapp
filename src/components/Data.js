@@ -19,7 +19,7 @@ export const countries = {
 export const cotegary = [
   "business",
   "entertainment",
-  "general",
+
   "health",
   "science",
   "sports",

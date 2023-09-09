@@ -6,11 +6,20 @@ import { NewsCard } from "./newsCard";
 export const CompleteCard = ({ selectedCountry, selectedCotegary }) => {
   console.log(selectedCotegary, selectedCountry);
   const [fetchedData, setFetchedData] = useState({});
-
-  useEffect(() => {
+  const handleClick = () => {
     axios
       .get(
-        `https://newsapi.org/v2/top-headlines?country=${countries[selectedCountry]}&category=${selectedCotegary}&pageSize=30&apiKey=1b2fda85900b4639a99eb6c1fc7e3dcd`
+        `https://newsdata.io/api/1/news?apikey=pub_2912749c673bee3500033f1f18aad34e68797&country=${countries[selectedCountry]}&language=en&category=${selectedCotegary}&page=${fetchedData.nextPage}`
+      )
+      .then(async (res) => {
+        setFetchedData(res.data);
+      });
+  };
+  useEffect(() => {
+    axios
+
+      .get(
+        `https://newsdata.io/api/1/news?apikey=pub_2912749c673bee3500033f1f18aad34e68797&country=${countries[selectedCountry]}&language=en&category=${selectedCotegary}`
       )
       .then(async (res) => {
         setFetchedData(res.data);
@@ -18,10 +27,19 @@ export const CompleteCard = ({ selectedCountry, selectedCotegary }) => {
   }, [selectedCotegary, selectedCountry]);
   return (
     <div>
-      {console.log(fetchedData)}
       {Object.keys(fetchedData).length > 0 ? (
-        <NewsCard articles={fetchedData.articles}> </NewsCard>
+        <NewsCard articles={fetchedData.results}> </NewsCard>
       ) : null}
+      <div
+        className=" next text-end "
+        style={{ fontSize: "30px", marginRight: "40px", marginBottom: "50px" }}
+        onClick={() => handleClick()}
+      >
+        <span style={{ backgroundColor: "gray", cursor: "pointer" }}>
+          {" "}
+          Next Page{" "}
+        </span>
+      </div>
     </div>
   );
 };
